@@ -20,6 +20,7 @@ specifiers:
   reflect-metadata: ^0.1.13
   source-map-support: ^0.5.21
   typescript: ~4.6
+  uuid: ^8.3.2
   youch: ^3.2.0
   youch-terminal: ^2.1.4
 
@@ -32,6 +33,7 @@ dependencies:
   proxy-addr: 2.0.7
   reflect-metadata: 0.1.13
   source-map-support: 0.5.21
+  uuid: 8.3.2
 
 devDependencies:
   '@adonisjs/assembler': 5.8.0_@adonisjs+core@5.8.5
@@ -4637,6 +4639,11 @@ packages:
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  /uuid/8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+    dev: false
 
   /v8-compile-cache/2.3.0:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
