@@ -1,0 +1,25 @@
+import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
+import Role from '../../app/Models/Role'
+
+export default class RoleSeeder extends BaseSeeder {
+  public async run() {
+    // Write your database queries inside the run method
+
+    const uniqueKey = 'name'
+
+    await Role.updateOrCreateMany(uniqueKey, [
+      {
+        name: 'admin',
+        description: 'Access to all resources of the system',
+      },
+      {
+        name: 'client',
+        description: 'Access to shopping and product resources only',
+      },
+      {
+        name: 'employee',
+        description: 'Access to sales resources only',
+      },
+    ])
+  }
+}
