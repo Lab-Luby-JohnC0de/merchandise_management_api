@@ -1,5 +1,5 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
-import Category from '../../app/Models/Category'
+import Category from 'App/Models/Category'
 
 export default class CategorySeeder extends BaseSeeder {
   public static developmentOnly = true
