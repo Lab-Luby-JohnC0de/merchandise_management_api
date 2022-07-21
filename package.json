@@ -56,6 +56,7 @@
     "@adonisjs/core": "^5.8.4",
     "@adonisjs/lucid": "^18.1.0",
     "@adonisjs/repl": "^3.1.11",
+    "adonis-lucid-filter": "^4.1.0",
     "argon2": "^0.28.7",
     "luxon": "^3.0.1",
     "mysql": "^2.18.1",
