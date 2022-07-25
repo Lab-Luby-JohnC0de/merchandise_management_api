@@ -5,6 +5,7 @@ import Role from 'App/Models/Role'
 import User from 'App/Models/User'
 import StoreValidator from 'App/Validators/User/StoreValidator'
 import UpdateValidator from 'App/Validators/User/UpdateValidator'
+import AccessAllowValidator from 'App/Validators/User/AccessAllowValidator'
 
 export default class UsersController {
   public async index({ response, request }: HttpContextContract) {
@@ -71,12 +72,13 @@ export default class UsersController {
       })
     }
 
-    let userFind
+    let user
     try {
-      userFind = await User.query()
+      user = await User.query()
         .where('id', userCreated.id)
         .preload('roles')
         .preload('addresses')
+        .firstOrFail()
     } catch (error) {
       trx.rollback()
       return response.badRequest({
@@ -87,7 +89,7 @@ export default class UsersController {
 
     trx.commit()
 
-    return response.ok({ userFind })
+    return response.ok(user)
   }
 
   public async show({ response, params }: HttpContextContract) {
@@ -98,6 +100,7 @@ export default class UsersController {
         .where('secure_id', userSecureId)
         .preload('addresses')
         .preload('roles')
+        .firstOrFail()
 
       return response.ok(user)
     } catch (error) {
@@ -152,12 +155,13 @@ export default class UsersController {
       })
     }
 
-    let userFind
+    let user
     try {
-      userFind = await User.query()
+      user = await User.query()
         .where('id', userUpdated.id)
         .preload('roles')
         .preload('addresses')
+        .firstOrFail()
     } catch (error) {
       trx.rollback()
       return response.badRequest({
@@ -168,18 +172,50 @@ export default class UsersController {
 
     trx.commit()
 
-    return response.ok({ userFind })
+    return response.ok(user)
   }
 
   public async destroy({ response, params }: HttpContextContract) {
     const userSecureId = params.id
 
     try {
-      await User.query().where('secure_id', userSecureId).delete()
+      const userFind = await User.findByOrFail('secure_id', userSecureId)
 
+      await userFind.delete()
       return response.ok({ message: 'user deleted successfully' })
     } catch (error) {
       return response.notFound({ message: 'User not found', originalError: error.message })
+    }
+  }
+
+  public async AccessAllow({ response, request }: HttpContextContract) {
+    await request.validate(AccessAllowValidator)
+
+    const { userId, roles } = request.all()
+
+    try {
+      const userAllow = await User.findByOrFail('id', userId)
+
+      let roleIds: number[] = []
+      await Promise.all(
+        roles.map(async (roleName) => {
+          const hasRole = await Role.findBy('name', roleName)
+          if (hasRole) roleIds.push(hasRole.id)
+        })
+      )
+
+      await userAllow.related('roles').sync(roleIds)
+    } catch (error) {
+      return response.badRequest({ message: 'Error in access allow', originalError: error.message })
+    }
+
+    try {
+      return User.query().where('id', userId).preload('roles').preload('addresses').firstOrFail()
+    } catch (error) {
+      return response.badRequest({
+        message: 'Error in find user',
+        originalError: error.message,
+      })
     }
   }
 }
