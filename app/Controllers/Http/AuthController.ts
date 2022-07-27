@@ -9,9 +9,7 @@ export default class AuthController {
     const user = await User.query().where('email', email).preload('roles').first()
 
     try {
-      const token = await auth
-        .use('api')
-        .attempt(email, password, { name: user?.name, expiresIn: '30mins' })
+      const token = await auth.use('api').attempt(email, password, { name: user?.name }) // expiresIn: '30mins' <- inside attempt
       return { token, user }
     } catch (error) {
       return response.unauthorized({ message: 'Usuário ou senha inválidos' })
