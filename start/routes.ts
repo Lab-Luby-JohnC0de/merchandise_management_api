@@ -14,6 +14,7 @@ Route.get('test_db_connections', async ({ response }: HttpContextContract) => {
 Route.group(() => {
   Route.post('login', 'AuthController.login')
   Route.post('users', 'UsersController.store')
+  Route.resource('redis/', 'TestRedisController').only(['show', 'destroy', 'store'])
 }).prefix('v1/api')
 
 // Client Routes Group
