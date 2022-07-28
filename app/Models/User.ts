@@ -45,7 +45,6 @@ export default class User extends compose(BaseModel, Filterable) {
   @column()
   public email: string
 
-  @column()
   @column({ serializeAs: null })
   public password: string
 
